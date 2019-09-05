@@ -1,33 +1,32 @@
-#include <sys/socket.h>
-#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
+int main(int argc, char const *argv[])
+{
+	//se crea el socket
+int socketCliente;
+socketCliente=socket(AF_INET, SOCK_STREAM, 0);
 
-int main(int argc, char** argv) {
+//especifica una direccion para el socket
+struct sockaddr_in  direccionDeServidor;
+direccionDeServidor.sin_family= AF_INET; //tipo de direccion
+direccionDeServidor.sin_port= htons(5040);  //castea el numero de puerto.
+direccionDeServidor.sin_addr.s_addr=INADDR_ANY; // direccion de la ip
 
-    struct sockaddr_in direccionEstacionCentral; //se instancia el socket
-    direccionEstacionCentral.sin_family= AF_INET;
-    direccionEstacionCentral.sin_port= htons(5040); //en que puerto debe escuchar hay que poner un numero
-    direccionEstacionCentral.sin_addr.s_addr=inet_addr("192.168.56.1"); //escuchar en cualquier interfaz del SO
-    
-    int yoCliente=socket(AF_INET, SOCK_STREAM,0);
-        if(0!=connect(yoCliente,(void*)&direccionEstacionCentral,sizeof(direccionEstacionCentral))){
-        perror("no se pudo establecer la conexion");
-        return 1;
-        }
-    
-    while(1){
-        
-        char mensaje[100];
-        fscanf("%s",mensaje); // LA ESTACION LEE UN ARCHIVO SETEA EL TREN Y LO ENVIA.
-        
-        send(yoCliente,mensaje,strlen(mensaje),0);
-        
-    }
-    
-    return (EXIT_SUCCESS);
+int estado_Conexion=connect(socketCliente, (struct sockaddr *) &direccionDeServidor, sizeof(direccionDeServidor));
+
+if(estado_Conexion==-1){
+	printf("Hubo un error al intentar establecer la conexion\n");
 }
-    
+// se recibe los datos del servidor
+char respuesta_Servidor[1000];
+recv(socketCliente, &respuesta_Servidor, sizeof(respuesta_Servidor), 0);
 
+printf("respuesta del servidor:%s\n",respuesta_Servidor);
+
+close(socketCliente);
+return 0;
+}
