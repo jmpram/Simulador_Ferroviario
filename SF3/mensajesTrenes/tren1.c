@@ -5,21 +5,22 @@
 #include <string.h> 
 #include <sys/socket.h> 
 #define MAX 80 
-#define PORT 8080 
+#define PORT 8080
 #define SA struct sockaddr 
+
 void escribirMensaje(int sockTren) { 
     char mensaje[MAX]; 
     int i; 
     for (;;) { 
         bzero(mensaje, sizeof(mensaje)); 
-        printf("Ingrese el mensaje: "); 
+        printf(" \n Ingrese el mensaje: \n"); 
         i = 0; 
-        while ((mensaje[i++] = getchar()) != '\n') 
-            ; 
+        while ((mensaje[i++] = getchar()) != '\n'); 
+        
         write(sockTren, mensaje, sizeof(mensaje)); 
         bzero(mensaje, sizeof(mensaje)); 
         read(sockTren, mensaje, sizeof(mensaje)); 
-        printf("Desde la estacion : %s", mensaje); 
+        printf("Estacion envio: %s \n", mensaje); 
         if ((strncmp(mensaje, "exit", 4)) == 0) { 
             printf("El tren se desconecto...\n"); 
             break; 
@@ -39,7 +40,7 @@ int main()
         exit(0); 
     } 
     else
-        printf("Se creo el socket..\n"); 
+        printf("Se creo el tren..\n"); 
     bzero(&estacionAddr, sizeof(estacionAddr)); 
   
     // se asigna la ip y el puerto a usar
@@ -53,7 +54,7 @@ int main()
         exit(0); 
     } 
     else
-        printf("Esta conectado con el servidor..\n"); 
+        printf("Esta conectado con la estacion..\n"); 
   
     
     escribirMensaje(sockTren); 
