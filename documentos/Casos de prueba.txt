@@ -1,0 +1,10 @@
+1. Crear tren
+2. Solicitir "info" tren desde tren
+3. Solicitar "info" tren desde estación
+4. Registrar Tren
+5. Verificar descuento de combustible
+6. Levantar dos estaciones 2 trenes y migrarlos cruzados
+7. Tratar de migrar a una estación que no existe / mensaje de error
+8. enviar un tren y verificar si llega a otra estación y que no exista en la estación de origen
+9. consultar la planilla de estado de estación al finalizar el día.
+10. se envía un tren a una estación y vuelve a la estación inicial.
